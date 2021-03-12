@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 t_push		ft_create_t_push(int ac, char **av)
 {
@@ -7,6 +7,7 @@ t_push		ft_create_t_push(int ac, char **av)
 	push.av = av;
 	push.first_b = NULL;
 	push.last_b = NULL;
+	push.etape = 0;
 	return (push);
 }
 

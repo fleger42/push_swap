@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 int		ft_sorted(t_pile *pile)
 {
@@ -9,12 +9,10 @@ int		ft_sorted(t_pile *pile)
 		actual = pile->nbr;
 		if(pile->next != NULL && actual > pile->next->nbr)
 		{
-			printf("Not sorted\n");
 			return (0);
 		}
 		pile = pile->next;
 	}
-	printf("Sorted\n");
 	return (1);
 }
 

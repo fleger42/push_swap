@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 LIBFT = -L libft -lft
 
-PUSH_HEADER = -I push_swap_dir/includes -I libft/
+PUSH_HEADER = -I push_swap_dir/includes/ -I libft/
 
 CHECK_HEADER = -I checker_dir/ -I libft/
 

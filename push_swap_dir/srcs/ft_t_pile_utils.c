@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 void		ft_insert_after(t_pile *pile, t_pile *new)
 {

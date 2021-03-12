@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 t_pile		*ft_get_actual_pile(int nbr)
 {
@@ -9,15 +9,23 @@ t_pile		*ft_get_actual_pile(int nbr)
 	return (pile);
 }
 
-void		ft_pile_create_b(t_push	*push, int nbr)
+void		ft_pile_create_first(t_push	*push, int nbr, int ver)
 {
 	t_pile		*elem;
 
 	elem = ft_get_actual_pile(nbr);
 	elem->next = NULL;
 	elem->prev = NULL;
-	push->last_b = elem;
-	push->first_b = elem;
+	if(ver == ALPHA)
+	{
+		push->last_a = elem;
+		push->first_a = elem;
+	}
+	else
+	{
+		push->last_b = elem;
+		push->first_b = elem;
+	}
 }
 
 void		ft_pile_create_a(t_push	*push, char **av)

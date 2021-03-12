@@ -6,17 +6,18 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-LIBFT = -L libft
+LIBFT = -L libft -lft
 
-PUSH_HEADER = push_swap_dir/push_swap.h
+PUSH_HEADER = -I push_swap_dir/includes -I libft/
 
-CHECK_HEADER = checker_dir/checker.h
+CHECK_HEADER = -I checker_dir/ -I libft/
 
-PUSH_SRC = push_swap.c
+PUSH_SRC = push_swap.c ft_struct_push.c ft_verif.c  ft_t_pile_utils.c \
+			ft_t_pile.c 
 
 CHECK_SRC = checker.c
 
-PUSH_SRCS = $(addprefix push_swap_dir/, $(PUSH_SRC))
+PUSH_SRCS = $(addprefix push_swap_dir/srcs/, $(PUSH_SRC))
 	
 CHECKER_SRCS = $(addprefix checker_dir/, $(CHECK_SRC))
 
@@ -42,7 +43,7 @@ $(CHECKER_NAME): $(CHECKER_OBJ)
 
 %.o: %.c
 	@printf "\033[0;33mGenerating objects... %-33.33s\r" $@
-	@${CC} ${CFLAGS} -c $< -o $@
+	@${CC} ${CFLAGS} $(LIBFT) $(PUSH_HEADER) $(CHECK_HEADER) -c $< -o $@
 
 clean:
 	@echo "\033[0;31mCleaning libft..."

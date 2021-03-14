@@ -26,6 +26,7 @@ void		ft_pile_create_first(t_push	*push, int nbr, int ver)
 		push->last_b = elem;
 		push->first_b = elem;
 	}
+	push->pb_size = ft_size_pile(push->first_b);
 }
 
 void		ft_pile_create_a(t_push	*push, char **av)
@@ -55,6 +56,7 @@ void		ft_pile_create_a(t_push	*push, char **av)
 			elem1 = elem1->prev;
 	}
 	push->first_a = elem1;
+	push->pa_size = ft_size_pile(push->first_a);
 }
 
 void		ft_free_pile(t_pile *pile)

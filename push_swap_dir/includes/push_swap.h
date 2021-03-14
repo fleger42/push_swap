@@ -10,9 +10,10 @@
 
 typedef struct	s_push
 {
-	int ac;
-	char **av;
-	int etape;
+	int 			ac;
+	char 			**av;
+	int				*sorted_tab;
+	int 			etape;
 	struct s_pile	*first_a;
 	int				pa_size;
 	struct s_pile	*last_a;
@@ -24,6 +25,10 @@ typedef struct	s_push
 	struct s_pile	*liste;
 	int				liste_index;
 	int				liste_length;
+	int				nbr_list;
+	int				rest;
+	int				**all_list;
+	int				*all_list_size;
 }				t_push;
 
 typedef struct	s_pile
@@ -32,6 +37,7 @@ typedef struct	s_pile
 	struct s_pile	*prev;
 	struct s_pile	*next;
 }				t_pile;
+void	ft_five(t_push *push);
 void	ft_rrb(t_push *push); //reverse rotate b : shift down all elements of stackaby 1. The last_b elementbecomes the first_a one.
 void	ft_rb(t_push *push); //rotate b : shift up all elements of stackaby 1. The first_b element becomesthe last_a one.
 void		ft_print_t_pile(t_pile *pile, t_pile *pile2);
@@ -49,8 +55,9 @@ void		ft_insert_before(t_push *push, t_pile *pile, t_pile *new, int ver);
 void		ft_remove_pile(t_push *push, t_pile *to_supp, int ver);
 t_pile		*ft_dup_pile(t_pile *pile);
 void	ft_big(t_push *push);
-int		ft_get_biggest(t_pile *pile);
-int		ft_get_tiniest(t_pile *pile);
+int		ft_get_biggest_index(t_pile *pile);
+t_pile	*ft_get_biggest(t_pile *pile);
+t_pile	*ft_get_tiniest(t_pile *pile);
 void	ft_sa(t_push *push);
 void	ft_rra(t_push *push);
 void	ft_ra(t_push *push);

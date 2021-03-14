@@ -12,7 +12,7 @@ PUSH_HEADER = -I push_swap_dir/includes/ -I libft/
 
 CHECK_HEADER = -I checker_dir/ -I libft/
 
-PUSH_SRC = push_swap.c ft_struct_push.c ft_verif.c  ft_t_pile_utils.c \
+PUSH_SRC = push_swap.c ft_struct_push.c ft_verif.c  ft_t_pile_utils.c ft_instruction.c \
 			ft_t_pile.c 
 
 CHECK_SRC = checker.c

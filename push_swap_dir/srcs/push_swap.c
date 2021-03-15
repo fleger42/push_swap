@@ -89,8 +89,8 @@ void	ft_rearrange_b(t_push *push, int nbr)
 	from_start = 0;
 	start = push->first_b;
 	end = push->last_b;
-	printf("Before\n");
-	ft_print_t_pile(push->first_a, push->first_b);
+	//printf("Before\n");
+	//ft_print_t_pile(push->first_a, push->first_b);
 	if(nbr > push->first_b->nbr)
 	{
 		ft_push_b(push);
@@ -131,8 +131,8 @@ void	ft_rearrange_b(t_push *push, int nbr)
 				ft_rb(push);
 		}
 	}
-	printf("After\n");
-	ft_print_t_pile(push->first_a, push->first_b);
+	//printf("After\n");
+	//ft_print_t_pile(push->first_a, push->first_b);
 }
 
 void	ft_pushlist_b(t_push *push)
@@ -263,24 +263,22 @@ void	ft_get_little_up(t_push *push)
 	}
 }
 
-void	ft_big(t_push *push)
+void	ft_get_big_up(t_push *push)
 {
-	ft_print_t_pile(push->first_a, push->first_b);
-	while(push->pa_size != 0)
-	{
+	int big_index;
+	int size;
 
-		ft_find_list(push);
-		ft_pushlist_top(push);
-		ft_pushlist_b(push);
-		push->pb_size = ft_size_pile(push->first_b);
-		push->pa_size = ft_size_pile(push->first_a);
-	}
-	while (push->pb_size != 0)
+	size = ft_size_pile(push->first_b);
+	big_index = ft_get_biggest_index(push->first_b);
+	while(big_index != 0)
 	{
-		ft_push_a(push);
-		push->pb_size = ft_size_pile(push->first_b);
+		if((double)size/(double)big_index < 2.0)
+			ft_rrb(push);
+		else
+			ft_rb(push);
+		size = ft_size_pile(push->first_b);
+		big_index = ft_get_biggest_index(push->first_b);
 	}
-	ft_print_t_pile(push->first_a, push->first_b);
 }
 
 int		*ft_create_liste(int *tab, int start, int end)
@@ -289,7 +287,7 @@ int		*ft_create_liste(int *tab, int start, int end)
 	int *list;
 	int j;
 
-	printf("Create a list from %d to %d\n", start, end);
+	//printf("Create a list from [%d] to [%d[\n", start, end);
 	j = 0;
 	i = 0;
 	list = malloc(sizeof(int) * (end - start));
@@ -310,7 +308,11 @@ void	ft_create_all_list(t_push *push, int nbr_list)
 	int end;
 	int q;
 
-	q = (push->pa_size - (push->pa_size%10))/5;
+	if(nbr_list == 0)
+	{
+		return ;
+	}
+	q = (push->pa_size - (push->pa_size%10))/nbr_list;
 	push->all_list = malloc(sizeof(int*) * nbr_list);
 	push->all_list_size = malloc(sizeof(int) * nbr_list);
 	push->rest = push->pa_size%10;
@@ -319,14 +321,14 @@ void	ft_create_all_list(t_push *push, int nbr_list)
 	end = q;
 	while(i < nbr_list)
 	{		
+		if(i + 1 == nbr_list)
+		{
+			end += push->rest;
+		}
 		push->all_list_size[i] = end - start;
 		push->all_list[i] = ft_create_liste(push->sorted_tab, start, end);
 		start += q;
 		end += q;
-		if(i + 2 == nbr_list)
-		{
-			end += push->rest;
-		}
 		i++;
 	}
 }
@@ -337,6 +339,8 @@ void	ft_printf_all_list(t_push *push)
 	int j;
 
 	i = 0;
+	if(push->nbr_list == 0)
+		return ;
 	while(i < push->all_list_size[push->nbr_list - 1])
 	{
 		j = 0;
@@ -355,16 +359,114 @@ void	ft_printf_all_list(t_push *push)
 	}
 }
 
-void	ft_hundred(t_push *push)
+int		ft_is_in_list(int nbr, int *liste, int liste_size)
 {
+	int i;
+
+	i = 0;
+	while(i < liste_size)
+	{
+		if(nbr == liste[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int		ft_scan_afrom_top(t_push *push, int *liste, int liste_size)
+{
+	int	i;
+	t_pile *pile;
+
+	pile = push->first_a;
+	i = 0;
+	while(pile)
+	{
+		if(ft_is_in_list(pile->nbr, liste, liste_size))
+			return (i);
+		pile = pile->next;
+		i++;
+	}
+	return (-1);
+}
+
+int		ft_scan_afrom_bottom(t_push *push, int *liste, int liste_size)
+{
+	int	i;
+	t_pile *pile;
+
+	pile = push->last_a;
+	i = 0;
+	while(pile)
+	{
+		if(ft_is_in_list(pile->nbr, liste, liste_size))
+		{
+			return (push->pa_size - (i + 1));
+		}
+		pile = pile->prev;
+		i++;
+	}
+	return (-1);
+}
+
+void	ft_push_index_top(t_push *push, int index)
+{
+	int time_to_top;
+
+	time_to_top = ft_timeto_top(push, index);
+	if((double)push->pa_size/(double)index < 2.0)
+	{
+		while(time_to_top--)
+			ft_rra(push);
+	}
+	else
+	{
+		while(time_to_top--)	
+			ft_ra(push);
+	}
+}
+
+void	ft_big(t_push *push) //3 0 7 2 10 1 9 8 4 5 6
+{
+	int index_top;
+	int index_bottom;
+	int	i;
+	int j;
+
+	i = 0;
+	j = 0;
 	push->nbr_list = 5;
 	ft_create_all_list(push, push->nbr_list);
-	ft_printf_all_list(push);
+	while(push->pa_size != 0)
+	{
+		index_top = ft_scan_afrom_top(push, push->all_list[i], push->all_list_size[i]);
+		index_bottom = ft_scan_afrom_bottom(push, push->all_list[i],  push->all_list_size[i]);
+		
+		if(ft_timeto_top(push, index_bottom) < ft_timeto_top(push, index_top))
+		{
+			ft_push_index_top(push, index_bottom);
+		}
+		else
+		{
+			ft_push_index_top(push, index_top);
+		}
+		ft_insert_inb(push);
+		push->pa_size = ft_size_pile(push->first_a);
+		j++;
+		if(j == push->all_list_size[0])
+		{
+			if(i + 1 < push->nbr_list)
+				i++;
+			j = 0;
+		}
+	}
+	ft_get_big_up(push);
+	while(push->first_b)
+		ft_push_a(push);
 }
 
 void	ft_little(t_push *push)
 {
-	ft_print_t_pile(push->first_a, push->first_b);
 	while(ft_sorted(push->first_a) == 0 || push->first_b != NULL)
 	{
 		if(ft_size_pile(push->first_a) == 2)
@@ -386,7 +488,6 @@ void	ft_little(t_push *push)
 			ft_get_little_up(push);
 			ft_push_b(push);
 		}
-		ft_print_t_pile(push->first_a, push->first_b);
 	}
 }
 
@@ -463,14 +564,65 @@ void	ft_insert_ina(t_push *push)
 			ft_ra(push);
 		ft_push_a(push);
 	}
-	ft_print_t_pile(push->first_a, push->first_b);
+	//ft_print_t_pile(push->first_a, push->first_b);
+}
+
+void	ft_push_after(t_push *push, t_pile *pile)
+{
+	(void)push;
+	(void)pile;
+	while(pile->nbr != push->last_b->nbr)
+		ft_rb(push);
+	ft_push_b(push);
+}
+
+void	ft_push_before(t_push *push, t_pile *pile)
+{
+	(void)push;
+	(void)pile;
+	while(pile->nbr != push->first_b->nbr)
+		ft_rb(push);
+	ft_push_b(push);
+}
+
+void	ft_insert_inb(t_push *push) //4 5 10 6 2 9 8 7 0 1 3
+{
+	t_pile *little;
+	t_pile *pile;
+	int		nbr;
+
+	if(push->pb_size == 0 || push->pb_size == 1)
+	{
+		ft_push_b(push);
+		return ;
+	}
+	nbr = push->first_a->nbr;
+	little = ft_get_tiniest(push->first_b);
+	pile = ft_get_biggest(push->first_b);
+	if(nbr > pile->nbr)
+	{
+		ft_push_before(push, pile);
+		return ;
+	}
+	if(nbr < little->nbr)
+	{
+		ft_push_after(push, little);
+		return ;
+	}
+	while(pile && nbr < pile->nbr && pile->nbr != little->nbr) 
+	{
+		if(pile->next == NULL)
+			pile = push->first_b;
+		else
+			pile = pile->next;
+	}
+	ft_push_before(push, pile);
 }
 
 void	ft_five(t_push *push)
 {
 	ft_push_b(push);
 	ft_push_b(push);
-	ft_print_t_pile(push->first_a, push->first_b);
 	ft_three(push);
 	ft_insert_ina(push);
 	ft_insert_ina(push);
@@ -534,20 +686,23 @@ int main(int ac, char **av)
 	push = ft_malloc_t_push(ac, av);
 	ft_verif(push);
 	ft_pile_create_a(push, av);
-	ft_print_t_pile(push->first_a, push->first_b);
 	ft_create_sorted_tab(push, av);
-	if(ac == 4)
+	if(push->pa_size == 1)
+		;
+	else if(push->pa_size == 2)
+	{
+		if(ft_sorted(push->first_a) == 0)
+			ft_sa(push);
+	}
+	else if(ac == 4)
 		ft_three(push);
 	else if (ac == 6)
 		ft_five(push);
 	else if (ac <= 100)
 		ft_little(push);
-	else if(ac <= 500)
-		ft_hundred(push);
 	else
 		ft_big(push);
 	if(ft_sorted(push->first_a) == 1 && push->first_b == NULL)
-		printf("Sort of [%d] number done in %d instructions\n", ft_size_pile(push->first_a), push->etape);
-	else
-		printf("Error : pile a is not sorted or pile b is not empty. [%d] instructions done\n", push->etape);
+		return (0);
+	return (1);
 }

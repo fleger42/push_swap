@@ -1,4 +1,4 @@
-#include "../includes/push_swap.h"
+#include "../includes/checker.h"
 
 t_push		ft_create_t_push(int ac, char **av)
 {

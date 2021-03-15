@@ -10,16 +10,17 @@ LIBFT = -L libft -lft
 
 PUSH_HEADER = -I push_swap_dir/includes/ -I libft/
 
-CHECK_HEADER = -I checker_dir/ -I libft/
+CHECK_HEADER = -I checker_dir/includes/ -I libft/
 
 PUSH_SRC = push_swap.c ft_struct_push.c ft_verif.c  ft_t_pile_utils.c ft_instruction.c \
 			ft_t_pile.c 
 
-CHECK_SRC = checker.c
+CHECK_SRC = checker.c ft_struct_push.c ft_verif.c  ft_t_pile_utils.c ft_instruction.c \
+			ft_t_pile.c get_next_line.c get_next_line_utils.c
 
 PUSH_SRCS = $(addprefix push_swap_dir/srcs/, $(PUSH_SRC))
 	
-CHECKER_SRCS = $(addprefix checker_dir/, $(CHECK_SRC))
+CHECKER_SRCS = $(addprefix checker_dir/srcs/, $(CHECK_SRC))
 
 PUSH_OBJ = $(PUSH_SRCS:c=o)
 
@@ -43,7 +44,7 @@ $(CHECKER_NAME): $(CHECKER_OBJ)
 
 %.o: %.c
 	@printf "\033[0;33mGenerating objects... %-33.33s\r" $@
-	@${CC} ${CFLAGS} $(LIBFT) $(PUSH_HEADER) $(CHECK_HEADER) -c $< -o $@
+	${CC} ${CFLAGS} $(LIBFT) $(PUSH_HEADER) $(CHECK_HEADER) -c $< -o $@
 
 clean:
 	@echo "\033[0;31mCleaning libft..."

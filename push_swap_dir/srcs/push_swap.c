@@ -1,13 +1,26 @@
 #include "../includes/push_swap.h"
 
-int		ft_timeto_top(t_push *push, int index)
+int		ft_timeto_top(t_push *push, int index, int ver)
 {
-	if((double)push->pa_size/(double)index > 2.0) //Faster with ra
+	if(ver == ALPHA)
 	{
-		return (index);
+		if((double)push->pa_size/(double)index > 2.0) //Faster with ra
+		{
+			return (index);
+		}
+		else //Faster with rra
+			return((index - push->pa_size) * -1);
 	}
-	else //Faster with rra
-		return((index - push->pa_size) * -1);
+	else
+	{
+		if((double)push->pb_size/(double)index > 2.0) //Faster with ra
+		{
+			return (index);
+		}
+		else //Faster with rra
+			return((index - push->pb_size) * -1);
+	}
+	
 }
 
 void		ft_find_list(t_push *push)
@@ -47,7 +60,7 @@ void		ft_find_list(t_push *push)
 			//printf("You need ");
 			//printf("%d ", ft_timeto_top(push, push->liste_index));
 			//printf("step to push %d (index = %d) on top\n", push->liste->nbr, push->liste_index);
-			if(ft_timeto_top(push, push->liste_index) > ft_timeto_top(push, count))
+			if(ft_timeto_top(push, push->liste_index, ALPHA) > ft_timeto_top(push, count, ALPHA))
 			{
 				push->liste = first;
 				push->liste_length = length;
@@ -65,7 +78,7 @@ void	ft_pushlist_top(t_push *push)
 {
 	int time;
 
-	time = ft_timeto_top(push, push->liste_index);
+	time = ft_timeto_top(push, push->liste_index, ALPHA);
 	if((double)push->pa_size/(double)push->liste_index > 2.0)
 	{
 		while(time--)
@@ -387,7 +400,7 @@ int		ft_scan_afrom_top(t_push *push, int *liste, int liste_size)
 		pile = pile->next;
 		i++;
 	}
-	return (-1);
+	return (0);
 }
 
 int		ft_scan_afrom_bottom(t_push *push, int *liste, int liste_size)
@@ -406,24 +419,50 @@ int		ft_scan_afrom_bottom(t_push *push, int *liste, int liste_size)
 		pile = pile->prev;
 		i++;
 	}
-	return (-1);
+	return (0);
 }
 
-void	ft_push_index_top(t_push *push, int index)
+void	ft_push_index_top(t_push *push, int index, int ver)
 {
 	int time_to_top;
 
-	time_to_top = ft_timeto_top(push, index);
-	if((double)push->pa_size/(double)index < 2.0)
+	time_to_top = ft_timeto_top(push, index, ver);
+	if(ver == ALPHA)
 	{
-		while(time_to_top--)
-			ft_rra(push);
+		if((double)push->pa_size/(double)index < 2.0)
+		{
+			while(time_to_top--)
+				ft_rra(push);
+		}
+		else
+		{
+			while(time_to_top--)	
+				ft_ra(push);
+		}
 	}
 	else
 	{
-		while(time_to_top--)	
-			ft_ra(push);
+		if((double)push->pb_size/(double)index < 2.0)
+		{
+			while(time_to_top--)
+				ft_rrb(push);
+		}
+		else
+		{
+			while(time_to_top--)	
+				ft_rb(push);
+		}
 	}
+}
+
+void	ft_scale(t_push *push)
+{
+	if(push->pa_size >= 100 && push->pa_size < 500)
+		push->nbr_list = 6;
+	if(push->pa_size >= 500 && push->pa_size < 1000)
+		push->nbr_list = 12;
+	if(push->pa_size >= 1000)
+		push->nbr_list = 18;
 }
 
 void	ft_big(t_push *push) //3 0 7 2 10 1 9 8 4 5 6
@@ -435,21 +474,17 @@ void	ft_big(t_push *push) //3 0 7 2 10 1 9 8 4 5 6
 
 	i = 0;
 	j = 0;
-	push->nbr_list = 5;
+	ft_scale(push);
 	ft_create_all_list(push, push->nbr_list);
 	while(push->pa_size != 0)
 	{
 		index_top = ft_scan_afrom_top(push, push->all_list[i], push->all_list_size[i]);
 		index_bottom = ft_scan_afrom_bottom(push, push->all_list[i],  push->all_list_size[i]);
 		
-		if(ft_timeto_top(push, index_bottom) < ft_timeto_top(push, index_top))
-		{
-			ft_push_index_top(push, index_bottom);
-		}
+		if(ft_timeto_top(push, index_bottom, ALPHA) < ft_timeto_top(push, index_top, ALPHA))
+			ft_push_index_top(push, index_bottom, ALPHA);
 		else
-		{
-			ft_push_index_top(push, index_top);
-		}
+			ft_push_index_top(push, index_top, ALPHA);
 		ft_insert_inb(push);
 		push->pa_size = ft_size_pile(push->first_a);
 		j++;
@@ -566,22 +601,71 @@ void	ft_insert_ina(t_push *push)
 	}
 	//ft_print_t_pile(push->first_a, push->first_b);
 }
+int		ft_timeto_bottom(t_push *push, int index, int ver)
+{
+	if(ver == ALPHA)
+	{
+		if((double)push->pa_size/(double)index > 2.0) //Faster with ra
+		{
+			return (index + 1);
+		}
+		else //Faster with rra
+			return(((index + 1) - push->pa_size) * -1);
+	}
+	else
+	{
+		if((double)push->pb_size/(double)index > 2.0) //Faster with ra
+		{
+			return (index + 1);
+		}
+		else //Faster with rra
+			return(((index + 1) - push->pb_size) * -1);
+	}
+	
+}
+
+void	ft_push_index_bottom(t_push *push, int index, int ver)
+{
+	int time_to_top;
+
+	time_to_top = ft_timeto_bottom(push, index, ver);
+	if(ver == ALPHA)
+	{
+		if((double)push->pa_size/(double)index > 2.0)
+		{
+			while(time_to_top--)
+				ft_ra(push);
+		}
+		else
+		{
+			while(time_to_top--)	
+				ft_rra(push);
+		}
+	}
+	else
+	{
+		if((double)push->pb_size/(double)index > 2.0)
+		{
+			while(time_to_top--)
+				ft_rb(push);
+		}
+		else
+		{
+			while(time_to_top--)	
+				ft_rrb(push);
+		}
+	}
+}
 
 void	ft_push_after(t_push *push, t_pile *pile)
 {
-	(void)push;
-	(void)pile;
-	while(pile->nbr != push->last_b->nbr)
-		ft_rb(push);
+	ft_push_index_bottom(push, ft_get_index(pile), BETA);
 	ft_push_b(push);
 }
 
 void	ft_push_before(t_push *push, t_pile *pile)
 {
-	(void)push;
-	(void)pile;
-	while(pile->nbr != push->first_b->nbr)
-		ft_rb(push);
+	ft_push_index_top(push, ft_get_index(pile), BETA);
 	ft_push_b(push);
 }
 

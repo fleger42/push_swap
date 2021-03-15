@@ -21,7 +21,6 @@ void	ft_instruction(t_push *push)
 	char *line;
 
 	line = NULL;
-	ft_print_t_pile(push->first_a, push->first_b);
 	while(get_next_line(0, &line) > 0)
 	{
 		if(ft_strcmp(line, "pa") == 0)
@@ -57,7 +56,6 @@ void	ft_instruction(t_push *push)
 		}
 		free(line);
 		line = NULL;
-		ft_print_t_pile(push->first_a, push->first_b);
 	}
 }
 
@@ -72,6 +70,7 @@ int main(int ac, char **av)
 	if(ft_sorted(push->first_a) == 1 && push->first_b == NULL)
 	{
 		printf("OK\n");
+		printf("sorted in %d\n", push->etape);
 		exit (0);
 	}
 	else

@@ -11,6 +11,7 @@ void	ft_sb(t_push *push) //swap a : swap the first_a 2 elements at the top of st
 	temp = pile->nbr;
 	pile->nbr = pile->next->nbr;
 	pile->next->nbr = temp;
+	push->etape++;
 }
 
 void	ft_sa(t_push *push) //swap a : swap the first_a 2 elements at the top of stack a. Do nothing if there is only one or no elements).
@@ -24,6 +25,7 @@ void	ft_sa(t_push *push) //swap a : swap the first_a 2 elements at the top of st
 	temp = pile->nbr;
 	pile->nbr = pile->next->nbr;
 	pile->next->nbr = temp;
+	push->etape++;
 }
 
 void	ft_rrb(t_push *push) //reverse rotate b : shift down all elements of stackaby 1. The last_b elementbecomes the first_a one.
@@ -39,6 +41,7 @@ void	ft_rrb(t_push *push) //reverse rotate b : shift down all elements of stacka
 	push->last_b->prev = NULL;
 	push->first_b = push->last_b;
 	push->last_b = new_last_b;
+	push->etape++;
 }
 
 void	ft_rb(t_push *push) //rotate b : shift up all elements of stackaby 1. The first_b element becomesthe last_a one.
@@ -54,6 +57,7 @@ void	ft_rb(t_push *push) //rotate b : shift up all elements of stackaby 1. The f
 	push->first_b->next = NULL;
 	push->last_b = push->first_b;
 	push->first_b = new_first_b;
+	push->etape++;
 }
 
 void	ft_rra(t_push *push) //reverse rotate a : shift down all elements of stackaby 1. The last_a elementbecomes the first_a one.
@@ -69,6 +73,7 @@ void	ft_rra(t_push *push) //reverse rotate a : shift down all elements of stacka
 	push->last_a->prev = NULL;
 	push->first_a = push->last_a;
 	push->last_a = new_last_a;
+	push->etape++;
 }
 
 void	ft_ra(t_push *push) //rotate a : shift up all elements of stackaby 1. The first_a element becomesthe last_a one.
@@ -84,6 +89,7 @@ void	ft_ra(t_push *push) //rotate a : shift up all elements of stackaby 1. The f
 	push->first_a->next = NULL;
 	push->last_a = push->first_a;
 	push->first_a = new_first_a;
+	push->etape++;
 }
 
 void	ft_push_b(t_push *push)
@@ -97,6 +103,7 @@ void	ft_push_b(t_push *push)
 	ft_remove_pile(push, push->first_a, ALPHA);
 	push->pb_size = ft_size_pile(push->first_b);
 	push->pa_size = ft_size_pile(push->first_a);
+	push->etape++;
 }
 
 void	ft_push_a(t_push *push)
@@ -110,4 +117,5 @@ void	ft_push_a(t_push *push)
 	ft_remove_pile(push, push->first_b, BETA);
 	push->pa_size = ft_size_pile(push->first_a);
 	push->pb_size = ft_size_pile(push->first_b);
+	push->etape++;
 }

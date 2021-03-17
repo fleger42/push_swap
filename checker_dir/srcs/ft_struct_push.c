@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_struct_push.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/17 02:02:43 by user42            #+#    #+#             */
+/*   Updated: 2021/03/17 02:02:47 by user42           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/checker.h"
 
 t_push		ft_create_t_push(int ac, char **av)
 {
 	t_push	push;
+
 	push.ac = ac;
 	push.av = av;
 	push.first_b = NULL;
@@ -28,5 +41,7 @@ t_push		*ft_malloc_t_push(int ac, char **av)
 
 void		ft_free_t_push(t_push *to_free)
 {
+	ft_free_pile(to_free->first_a);
+	ft_free_pile(to_free->first_b);
 	free(to_free);
 }

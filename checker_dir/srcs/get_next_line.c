@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 17:56:16 by fleger            #+#    #+#             */
-/*   Updated: 2021/03/14 21:47:37 by user42           ###   ########.fr       */
+/*   Updated: 2021/03/16 19:20:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,11 @@ char	*readline(char *str, int fd)
 		free(str);
 		str = temp;
 	}
-	if (str == NULL)
-		return (ft_strdup(""));
+	if (ret == 0)
+	{
+		free(str);
+		return (NULL);
+	}
 	return (str);
 }
 
@@ -52,10 +55,16 @@ char	*ft_realloc(char *str, int k)
 {
 	char	*temp;
 
-	temp = ft_strdup(&str[k + 1]);
+	if (str[k + 1] == '\0')
+	{
+		temp = NULL;
+	}
+	else
+	{
+		temp = ft_strdup(&str[k + 1]);
+	}
 	free(str);
-	str = temp;
-	return (str);
+	return (temp);
 }
 
 int		get_next_line(int fd, char **line)

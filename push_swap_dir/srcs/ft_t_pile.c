@@ -1,22 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_t_pile.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/16 22:10:05 by user42            #+#    #+#             */
+/*   Updated: 2021/03/16 23:38:50 by user42           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 t_pile		*ft_get_actual_pile(int nbr)
 {
-	t_pile *pile;
+	t_pile	*pile;
 
 	pile = malloc(sizeof(t_pile));
 	pile->nbr = nbr;
 	return (pile);
 }
 
-void		ft_pile_create_first(t_push	*push, int nbr, int ver)
+void		ft_pile_create_first(t_push *push, int nbr, int ver)
 {
-	t_pile		*elem;
+	t_pile	*elem;
 
 	elem = ft_get_actual_pile(nbr);
 	elem->next = NULL;
 	elem->prev = NULL;
-	if(ver == ALPHA)
+	if (ver == ALPHA)
 	{
 		push->last_a = elem;
 		push->first_a = elem;
@@ -29,23 +41,22 @@ void		ft_pile_create_first(t_push	*push, int nbr, int ver)
 	push->pb_size = ft_size_pile(push->first_b);
 }
 
-void		ft_pile_create_a(t_push	*push, char **av)
+void		ft_pile_create_a(t_push *push, char **av)
 {
 	t_pile		*elem2;
 	t_pile		*elem1;
 	int			i;
 
-	i = 1;
+	i = 0;
 	elem2 = NULL;
 	elem1 = NULL;
-	while (av[i])
+	while (av[++i])
 	{
 		elem1 = ft_get_actual_pile(ft_atoi(av[i]));
 		elem1->prev = elem2;
 		if (elem2)
 			elem2->next = elem1;
 		elem2 = elem1;
-		i++;
 	}
 	if (elem1)
 		elem1->next = NULL;

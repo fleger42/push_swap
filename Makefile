@@ -12,11 +12,12 @@ PUSH_HEADER = -I push_swap_dir/includes/ -I libft/
 
 CHECK_HEADER = -I checker_dir/includes/ -I libft/
 
-PUSH_SRC = push_swap.c ft_struct_push.c ft_verif.c  ft_t_pile_utils.c ft_instruction.c \
-			ft_t_pile.c 
+PUSH_SRC = ft_big.c	ft_little.c ft_t_pile.c ft_get.c ft_push.c ft_t_pile_utils.c \
+			ft_insert.c ft_scan.c ft_utils.c ft_instruction.c ft_struct_push.c ft_verif.c \
+			ft_list.c ft_time.c push_swap.c ft_instruction2.c
 
 CHECK_SRC = checker.c ft_struct_push.c ft_verif.c  ft_t_pile_utils.c ft_instruction.c \
-			ft_t_pile.c get_next_line.c get_next_line_utils.c
+			ft_t_pile.c get_next_line.c get_next_line_utils.c ft_instruction2.c
 
 PUSH_SRCS = $(addprefix push_swap_dir/srcs/, $(PUSH_SRC))
 	

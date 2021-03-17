@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_t_pile_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/16 22:08:56 by user42            #+#    #+#             */
+/*   Updated: 2021/03/16 23:37:15 by user42           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 void		ft_insert_after(t_pile *pile, t_pile *new)
@@ -23,7 +35,7 @@ void		ft_insert_before(t_push *push, t_pile *pile, t_pile *new, int ver)
 	if (pile->prev == NULL)
 	{
 		new->prev = NULL;
-		if(ver == ALPHA)
+		if (ver == ALPHA)
 			push->first_a = new;
 		else
 			push->first_b = new;
@@ -42,7 +54,7 @@ void		ft_remove_pile(t_push *push, t_pile *to_supp, int ver)
 		return ;
 	if (to_supp->prev == NULL)
 	{
-		if(ver == ALPHA)
+		if (ver == ALPHA)
 			push->first_a = to_supp->next;
 		else
 			push->first_b = to_supp->next;
@@ -61,23 +73,4 @@ t_pile		*ft_dup_pile(t_pile *pile)
 	new = malloc(sizeof(t_pile));
 	new->nbr = pile->nbr;
 	return (new);
-}
-
-void		ft_print_t_pile(t_pile *pile, t_pile *pile2)
-{
-	printf("-A-    -B-\n");
-	while(pile || pile2)
-	{
-		if(pile)
-			printf("[%d]    ", pile->nbr);
-		if(pile == NULL && pile2 != NULL)
-			printf("        ");
-		if(pile2)
-			printf("[%d]",  pile2->nbr);
-		printf("\n");
-		if(pile)
-			pile = pile->next;
-		if(pile2)
-			pile2 = pile2->next;
-	}
 }

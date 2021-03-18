@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 02:36:28 by user42            #+#    #+#             */
-/*   Updated: 2021/03/17 02:36:28 by user42           ###   ########.fr       */
+/*   Updated: 2021/03/17 20:26:55 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,5 @@ void			ft_pile_create_a(t_push	*push, char **av);
 void			ft_free_pile(t_pile *pile);
 int				ft_sorted(t_pile *pile);
 void			ft_verif(t_push *push);
+long int		ft_atoli(const char *nptr);
 #endif

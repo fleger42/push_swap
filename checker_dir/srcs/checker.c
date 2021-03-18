@@ -6,11 +6,38 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/17 01:56:02 by user42            #+#    #+#             */
-/*   Updated: 2021/03/17 02:17:38 by user42           ###   ########.fr       */
+/*   Updated: 2021/03/17 20:27:55 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/checker.h"
+
+long int	ft_atoli(const char *nptr)
+{
+	int				i;
+	long int		result;
+	int				signe;
+
+	signe = 1;
+	i = 0;
+	result = 0;
+	while ((nptr[i] >= 8 && nptr[i] <= 13) || nptr[i] == ' ')
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
+	{
+		if (nptr[i] == '-')
+			signe = -1;
+		i++;
+	}
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+	{
+		result = result * 10 + (nptr[i++] - 48);
+	}
+	result = result * signe;
+	if (result > 2147483647 || result < -2147483648)
+		errno = ERANGE;
+	return (result);
+}
 
 int			ft_size_pile(t_pile *pile)
 {

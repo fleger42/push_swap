@@ -56,6 +56,6 @@ The checker program will receive instruction and check if the pile A is sorted a
 
 # Tester :
 
-I made a tester that generate list of random number with different size and check if your push_swap and checker are working properly. To test this project you can enter the tester repository and launch ./push_swap_tester.sh
+I made a tester that generate list of random number with different size and check if your push_swap and checker are working properly. To test this project you can enter the tester repository and launch ./push_swap_tester.sh (Only work on linux distribution)
 ## Final grade:
 125/100
